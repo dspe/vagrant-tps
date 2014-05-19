@@ -6,7 +6,7 @@ vagrantfile-local:
         box_url: 'http://box.puphpet.com/debian-wheezy72-x64-vbox43.box'
         hostname: null
         network:
-            private_network: 192.168.56.101
+            private_network: 192.168.56.201
             forwarded_port:
                 zOy5TTL3dTHw:
                     host: '8777'
@@ -65,7 +65,7 @@ apache:
     settings:
         user: vagrant
         group: vagrant
-        default_vhost: true
+        default_vhost: false
         manage_user: false
         manage_group: false
         sendfile: 0
@@ -73,18 +73,38 @@ apache:
         - php
         - rewrite
     vhosts:
-        79huXL6QzD9u:
+        www.tps.dev:
             servername: www.tps.dev
-            serveraliases:
-                - admin.tps.dev
-            docroot: /var/www/tps
+            #serveraliases:
+                #- admin.tps.dev
+            docroot: /var/www/tps/www
             port: '80'
             setenv:
                 - 'MYSQLHOST_ENV localhost'
                 - 'MYSQLUSER_ENV tps'
                 - 'MYSQLPASSWORD_ENV tps'
             override:
-                - All
+                - None
+            options:
+                - Indexes
+                - FollowSymLinks
+                - MultiViews
+            custom_fragment: ''
+            ssl_cert: ''
+            ssl_key: ''
+            ssl_chain: ''
+            ssl_certs_dir: ''
+        admin.tps.dev:
+            servername: admin.tps.dev
+            #serveralias:
+            docroot: /var/www/tps/www-ssl
+            port: '80'
+            setenv:
+                - 'MYSQLHOST_ENV localhost'
+                - 'MYSQLUSER_ENV tps'
+                - 'MYSQLPASSWORD_ENV tps'
+            override:
+                - None
             options:
                 - Indexes
                 - FollowSymLinks
@@ -167,7 +187,7 @@ mysql:
             host: localhost
             user: tps
             password: tps
-            sql_file: ''
+            sql_file: '/var/www/tps/backup/common.sql'
         tps_dro:
             grant:
                 - ALL
@@ -175,7 +195,7 @@ mysql:
             host: localhost
             user: tps
             password: tps
-            sql_file: ''
+            sql_file: '/var/www/tps/backup/dro-new2.sql'
         tps_stax:
             grant:
                 - ALL
@@ -183,7 +203,7 @@ mysql:
             host: localhost
             user: tps
             password: tps
-            sql_file: ''
+            sql_file: '/var/www/tps/backup/stax.sql'
         tps_lambe:
             grant:
                 - ALL
@@ -191,7 +211,7 @@ mysql:
             host: localhost
             user: tps
             password: tps
-            sql_file: ''
+            sql_file: '/var/www/tps/backup/lambe.sql'
             
 postgresql:
     install: 0
